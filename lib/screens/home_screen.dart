@@ -1,3 +1,4 @@
+import 'package:OrganizeMe/helpers/draw_navigation.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('OrganizeMe'),
       ),
+      drawer: DrawerNavigation(),
     );
   }
 }
