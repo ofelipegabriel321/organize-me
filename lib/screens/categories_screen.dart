@@ -29,10 +29,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
             FlatButton(
               color: Colors.blue,
-              onPressed: () {
+              onPressed: () async {
                 _category.name = _categoryNameController.text;
                 _category.description = _categoryDescriptionController.text;
-                _categoryService.saveCategory(_category);
+                
+                var result = await _categoryService.saveCategory(_category);
+                print(result);
               },
               child: Text('Save'),
             ),
