@@ -1,4 +1,6 @@
+import 'package:OrganizeMe/models/category.dart';
 import 'package:OrganizeMe/screens/home_screen.dart';
+import 'package:OrganizeMe/services/category_service.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -7,6 +9,12 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+  var _categoryNameController = TextEditingController();
+  var _categoryDescriptionController = TextEditingController();
+  
+  var _category = Category();
+  var _categoryService = CategoryService();
+  
   _showFormDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -21,7 +29,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
             FlatButton(
               color: Colors.blue,
-              onPressed: () {},
+              onPressed: () {
+                _category.name = _categoryNameController.text;
+                _category.description = _categoryDescriptionController.text;
+                _categoryService.saveCategory(_category);
+              },
               child: Text('Save'),
             ),
           ],
@@ -30,12 +42,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             child: Column(
               children: <Widget>[
                 TextField(
+                  controller: _categoryNameController,
                   decoration: InputDecoration(
                     hintText: 'Write a category',
                     labelText: 'Category',
                   ),
                 ),
                 TextField(
+                  controller: _categoryDescriptionController,
                   decoration: InputDecoration(
                     hintText: 'Write a description',
                     labelText: 'Description',
