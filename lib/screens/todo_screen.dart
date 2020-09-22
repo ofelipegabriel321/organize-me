@@ -1,3 +1,4 @@
+import 'package:OrganizeMe/services/category_service.dart';
 import 'package:flutter/material.dart';
 
 class TodoScreen extends StatefulWidget {
@@ -14,7 +15,26 @@ class _TodoScreenState extends State<TodoScreen> {
 
   var _selectedValue;
 
-  var _categories;
+  var _categories = List<DropdownMenuItem>();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  _loadCategories() async {
+    var _categoryService = CategoryService();
+    var categories = await _categoryService.readCategories();
+    categories.forEach((category) {
+      setState(() {
+        _categories.add(DropdownMenuItem(
+          child: Text(category['name']),
+          value: category['name'],
+        ));
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +86,10 @@ class _TodoScreenState extends State<TodoScreen> {
             RaisedButton(
               onPressed: () {},
               color: Colors.blue,
-              child: Text('Save', style: TextStyle(color: Colors.white),),
+              child: Text(
+                'Save',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
