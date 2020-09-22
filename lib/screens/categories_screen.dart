@@ -28,6 +28,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     getAllCategories();
   }
 
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   getAllCategories() async {
     _categoryList = List<Category>();
     var categories = await _categoryService.readCategories();
@@ -51,8 +53,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     _editFormDialog(context);
   }
 
-  
-
   _showFormDialog(BuildContext context) {
     return showDialog(
       context: context,
@@ -75,6 +75,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 if (result > 0) {
                   print(result);
                   Navigator.pop(context);
+                  getAllCategories();
+                  _showSucesseSnackBar(Text('Updated'));
                 }
               },
               child: Text('Save'),
@@ -121,13 +123,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             FlatButton(
               color: Colors.blue,
               onPressed: () async {
-                _category.name = _categoryNameController.text;
-                _category.description = _categoryDescriptionController.text;
+                _category.id = category[0]['id'];
+                _category.name = _editCategoryNameController.text;
+                _category.description = _editCategoryDescriptionController.text;
 
-                var result = await _categoryService.saveCategory(_category);
+                var result = await _categoryService.updateCategory(_category);
                 if (result > 0) {
-                  print(result);
-                  Navigator.pop(context); 
+                  Navigator.pop(context);
+                  getAllCategories();
                 }
               },
               child: Text('Update'),
@@ -159,9 +162,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     );
   }
 
+  _showSucesseSnackBar(message) {
+    var _snackBar = SnackBar(content: message,);
+    _globalKey.currentState.showSnackBar(_snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(
         leading: RaisedButton(
           onPressed: () => Navigator.of(context)
