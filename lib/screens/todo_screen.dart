@@ -8,11 +8,11 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  var todoTitleController = TextEditingController();
+  var _todoTitleController = TextEditingController();
 
-  var todoDescriptionController = TextEditingController();
+  var _todoDescriptionController = TextEditingController();
 
-  var todoDateController = TextEditingController();
+  var _todoDateController = TextEditingController();
 
   var _selectedValue;
 
@@ -37,6 +37,24 @@ class _TodoScreenState extends State<TodoScreen> {
     });
   }
 
+  DateTime _dateTime = DateTime.now();
+
+  _selectedTodoDate(BuildContext context) async {
+    var _pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _dateTime,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (_pickedDate != null) {
+      setState(() {
+        _dateTime = _pickedDate;
+        _todoDateController.text = DateFormat('yyyy-MM-dd').format(_pickedDate);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,26 +66,28 @@ class _TodoScreenState extends State<TodoScreen> {
         child: Column(
           children: <Widget>[
             TextField(
-              controller: todoTitleController,
+              controller: _todoTitleController,
               decoration: InputDecoration(
                 labelText: 'Title',
                 hintText: 'Write Todo Title',
               ),
             ),
             TextField(
-              controller: todoDescriptionController,
+              controller: _todoDescriptionController,
               decoration: InputDecoration(
                 labelText: 'Description',
                 hintText: 'Write Todo Description',
               ),
             ),
             TextField(
-              controller: todoDateController,
+              controller: _todoDateController,
               decoration: InputDecoration(
                   labelText: 'Date',
                   hintText: 'Pick a Date',
                   prefixIcon: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      _selectedTodoDate(context);
+                    },
                     child: Icon(Icons.calendar_today),
                   )),
             ),
