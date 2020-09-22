@@ -1,4 +1,5 @@
 import 'package:OrganizeMe/helpers/draw_navigation.dart';
+import 'package:OrganizeMe/screens/todo_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +15,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('OrganizeMe'),
       ),
       drawer: DrawerNavigation(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => TodoScreen(),
+          ),
+        ),
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
