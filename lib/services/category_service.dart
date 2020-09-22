@@ -15,4 +15,8 @@ class CategoryService {
   readCategories() async {
     return await _repository.readData('categories');
   }
+
+  readCategoryById(categoryId) async {
+    return await _repository.readDataById('categories', categoryId);
+  }
 }
