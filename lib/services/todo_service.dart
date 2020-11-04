@@ -20,4 +20,8 @@ class TodoService {
     return await _repository.readDataByColumnName(
         'todos', 'category', category);
   }
+
+  deleteTodo(todoId) async {
+    return await _repository.deleteData('todos', todoId);
+  }
 }

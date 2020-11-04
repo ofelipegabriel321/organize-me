@@ -12,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TodoService _todoService;
 
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   List<Todo> _todoList = List<Todo>();
 
   @override
@@ -40,6 +42,43 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  _showSucessSnackBar(message) {
+    var _snackBar = SnackBar(content: message,);
+    _globalKey.currentState.showSnackBar(_snackBar);
+  }
+
+  _deleteFormDialog(BuildContext context, todoId) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (param) {
+        return AlertDialog(
+          actions: <Widget>[
+            FlatButton(
+              color: Colors.green,
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            FlatButton(
+              color: Colors.red,
+              onPressed: () async {
+
+                var result = await _todoService.deleteTodo(todoId);
+                if (result > 0) {
+                  Navigator.pop(context);
+                  getAllTodos();
+                  _showSucessSnackBar(Text('Deleted'));
+                }
+              },
+              child: Text('Delete'),
+            ),
+          ],
+          title: Text('Are you sure you want to delete this?'),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,21 +100,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(_todoList[index].title ?? 'No title'),
+                      Text(_todoList[index].title.isEmpty ? 'No title' : _todoList[index].title),
+                      Text(_todoList[index].todoDate.isEmpty ? 'No date' : _todoList[index].todoDate),
                     ],
                   ),
-                  subtitle: Text(_todoList[index].category ?? 'No Category'),
-                  trailing: Text(_todoList[index].todoDate ?? 'No Date'),
+                  subtitle: Text(_todoList[index].category.isEmpty ? 'No Category' : _todoList[index].category),
+                  trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          _deleteFormDialog(context, _todoList[index].id);
+                        },
+                      ),
                 ),
               ),
             );
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => TodoScreen(),
-          ),
-        ),
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TodoScreen(),
+            ),
+          );
+          getAllTodos();
+        },
         child: Icon(Icons.add),
       ),
     );

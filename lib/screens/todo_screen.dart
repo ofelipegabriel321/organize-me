@@ -118,9 +118,11 @@ class _TodoScreenState extends State<TodoScreen> {
               onPressed: ()  async{
                 var todoObject = Todo();
                 
+                _selectedValue = _selectedValue.toString() == 'null' ? '' : _selectedValue;
+
                 todoObject.title = _todoTitleController.text;
                 todoObject.description = _todoDescriptionController.text;
-                todoObject.category = _selectedValue.toString();
+                todoObject.category = _selectedValue.toString() == 'null' ? '' : _selectedValue.toString();
                 todoObject.todoDate = _todoDateController.text;
                 todoObject.isFinished = 0;
 
@@ -129,6 +131,7 @@ class _TodoScreenState extends State<TodoScreen> {
 
                 if (result > 0) {
                   _showSucessSnackBar(Text('Created'));
+                  Navigator.pop(context);
                 }
 
                 print(result);

@@ -130,7 +130,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 if (result > 0) {
                   Navigator.pop(context);
                   getAllCategories();
-                  _showSucesseSnackBar(Text('Updated'));
+                  _showSucessSnackBar(Text('Updated'));
                 }
               },
               child: Text('Update'),
@@ -182,7 +182,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 if (result > 0) {
                   Navigator.pop(context);
                   getAllCategories();
-                  _showSucesseSnackBar(Text('Deleted'));
+                  _showSucessSnackBar(Text('Deleted'));
                 }
               },
               child: Text('Delete'),
@@ -194,7 +194,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     );
   }
 
-  _showSucesseSnackBar(message) {
+  _showSucessSnackBar(message) {
     var _snackBar = SnackBar(content: message,);
     _globalKey.currentState.showSnackBar(_snackBar);
   }

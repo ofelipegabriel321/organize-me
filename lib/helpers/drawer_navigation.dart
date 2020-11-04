@@ -50,15 +50,6 @@ class _DrawerNavigationState extends State<DrawerNavigation> {
         child: Drawer(
           child: ListView(
             children: <Widget>[
-              UserAccountsDrawerHeader(
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://avatars1.githubusercontent.com/u/38538503?s=460&u=0e7ff0373f1e29396dc084eeeb66d973a28dd016&v=4'),
-                ),
-                accountName: Text('Felipe Gabriel'),
-                accountEmail: Text('admin@ofelipegabriel'),
-                decoration: BoxDecoration(color: Colors.blue),
-              ),
               ListTile(
                 leading: Icon(Icons.home),
                 title: Text('Home'),
